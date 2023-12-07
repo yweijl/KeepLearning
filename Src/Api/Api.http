@@ -1,0 +1,8 @@
+###
+< {%
+    request.variables.set("HostAddress", "http://localhost:5231/api/")
+%}
+
+GET {{HostAddress}}/Resources
+Accept: application/json
+
