@@ -1,8 +1,28 @@
-###
-< {%
-    request.variables.set("HostAddress", "http://localhost:5231/api/")
-%}
+POST {{host}}/Resources
+Content-Type: application/json
 
-GET {{HostAddress}}/Resources
+{
+  "name": "How to become an ambtenaar",
+  "description": "Information on how to become a abmteraar",
+  "source": "https://www.bol.com/nl/nl/p/hoe-word-ik-een-echte-ambtenaar/9200000006236974/",
+  "comments": [
+    "Be come a really good ambetanaar",
+    "Don't do it"
+  ]
+}
+
+###
+
+GET {{host}}/Resources/{{id}}
 Accept: application/json
+
+###
+GET {{host}}/Resources/
+Accept: application/json
+
+###
+DELETE {{host}}/Resources/{{id}}
+Accept: application/json
+
+
 

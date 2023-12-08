@@ -1,23 +1,48 @@
 using System.Net;
-using Core;
+using Core.Resources;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ResourcesController : ControllerBase
+public class ResourcesController(
+    IResourceService resourceService
+    ) : ControllerBase
 {
-    [HttpGet()]
-    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Resource))]
-    public IActionResult Get()
+    [HttpGet]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(List<Resource>))]
+    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    public async Task<IActionResult> List()
     {
-        return Ok(new Resource()
-        {
-            Name = "Test",
-            Description = "Desc",
-            Comments = new List<string>() { "1","2","3" },
-            Source = "source"
-        });
+        var resources = await resourceService.ListAsync();
+        return Ok(resources);
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Resource))]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> Get(Guid id)
+    {
+        var resources = await resourceService.GetAsync(id);
+        return Ok(resources);
+    }
+
+    [HttpPost]
+    [ProducesResponseType((int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> Post([FromBody] AddResourceRequest request)
+    {
+        var resource = await resourceService.AddAsync(request);
+        return CreatedAtAction(nameof(Get), new { resource.Id }, resource);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> DeleteById(Guid id)
+    {
+        await resourceService.RemoveAsync(id);
+        return NoContent();
     }
 }
