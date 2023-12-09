@@ -1,9 +1,11 @@
 using System.Net;
 using Core.Resources;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ResourcesController(
@@ -28,6 +30,7 @@ public class ResourcesController(
         return Ok(resources);
     }
 
+    [Authorize(Policy = "RequireInternalUserRole")]
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -37,6 +40,7 @@ public class ResourcesController(
         return CreatedAtAction(nameof(Get), new { resource.Id }, resource);
     }
 
+    [Authorize(Policy = "RequireInternalUserRole")]
     [HttpDelete("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]

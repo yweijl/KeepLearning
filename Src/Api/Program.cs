@@ -8,6 +8,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAuthentication().AddCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireInternalUserRole",
+        policy => policy.RequireRole("InternalUser"));
+});
+
 builder.Services.AddScoped<IResourceService, ResourceService>();
 
 var app = builder.Build();

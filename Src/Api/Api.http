@@ -1,3 +1,7 @@
+GET {{host}}/User/login/false
+Accept: application/json
+###
+
 POST {{host}}/Resources
 Content-Type: application/json
 
@@ -24,5 +28,9 @@ Accept: application/json
 DELETE {{host}}/Resources/{{id}}
 Accept: application/json
 
+###
 
+GET {{host}}/User/logout
+Accept: application/json
+###
 
