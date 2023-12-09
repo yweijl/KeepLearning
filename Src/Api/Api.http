@@ -16,8 +16,22 @@ Content-Type: application/json
 }
 
 ###
+POST {{host}}/Resources
+Content-Type: application/json
 
-GET {{host}}/Resources/{{id}}
+{
+  "name": "How to become an Developer",
+  "description": "Information on how to type ones and zero's",
+  "source": "https://www.youtube.com/watch?v=zDNaUi2cjv4",
+  "comments": [
+    "Now i know ho to type 1010",
+    "0000"
+  ]
+}
+
+###
+
+GET {{host}}/Resources/0598fd97-f780-4d59-8e03-a3fb89d621a1
 Accept: application/json
 
 ###
@@ -25,7 +39,7 @@ GET {{host}}/Resources/
 Accept: application/json
 
 ###
-DELETE {{host}}/Resources/{{id}}
+DELETE {{host}}/Resources/2fced772-270a-4a64-ac01-64783b75e7b1
 Accept: application/json
 
 ###

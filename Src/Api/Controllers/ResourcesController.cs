@@ -8,16 +8,21 @@ namespace Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class ResourcesController(
-    IResourceService resourceService
-    ) : ControllerBase
+public class ResourcesController : ControllerBase
 {
+    private readonly IResourceService _resourceService;
+
+    public ResourcesController(IResourceService resourceService)
+    {
+        this._resourceService = resourceService;
+    }
+
     [HttpGet]
     [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(List<Resource>))]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> List()
     {
-        var resources = await resourceService.ListAsync();
+        var resources = await _resourceService.ListAsync();
         return Ok(resources);
     }
 
@@ -26,7 +31,7 @@ public class ResourcesController(
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Get(Guid id)
     {
-        var resources = await resourceService.GetAsync(id);
+        var resources = await _resourceService.GetAsync(id);
         return Ok(resources);
     }
 
@@ -36,7 +41,7 @@ public class ResourcesController(
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> Post([FromBody] AddResourceRequest request)
     {
-        var resource = await resourceService.AddAsync(request);
+        var resource = await _resourceService.AddAsync(request);
         return CreatedAtAction(nameof(Get), new { resource.Id }, resource);
     }
 
@@ -46,7 +51,7 @@ public class ResourcesController(
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> DeleteById(Guid id)
     {
-        await resourceService.RemoveAsync(id);
+        await _resourceService.RemoveAsync(id);
         return NoContent();
     }
 }

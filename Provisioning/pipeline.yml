@@ -81,4 +81,4 @@ stages:
                     appType: "webAppLinux"
                     appName: "${{variables.name}}-as"
                     package: "$(Pipeline.Workspace)/drop/*.zip"
-                    runtimeStack: "DOTNETCORE|8.0"
+                    runtimeStack: "DOTNETCORE|7.0"
