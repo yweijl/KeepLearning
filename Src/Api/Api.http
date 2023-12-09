@@ -39,7 +39,7 @@ GET {{host}}/Resources/
 Accept: application/json
 
 ###
-DELETE {{host}}/Resources/2fced772-270a-4a64-ac01-64783b75e7b1
+DELETE {{host}}/Resources/04b84330-a8aa-432e-a747-ab13aa2cf719
 Accept: application/json
 
 ###

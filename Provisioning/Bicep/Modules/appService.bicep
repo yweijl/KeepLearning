@@ -71,6 +71,10 @@ resource appService 'Microsoft.Web/sites@2022-09-01' = {
           name: 'CosmosSettings__Container'
           value: containerName
         }
+        {
+          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+          value: appInsight.properties.InstrumentationKey
+        }
       ]
     }
   }
