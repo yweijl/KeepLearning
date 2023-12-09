@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddAuthentication().AddCookie(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -24,6 +23,9 @@ builder.Services.AddScoped<IResourceService, ResourceService>();
 
 var app = builder.Build();
 
+app.UseBlazorFrameworkFiles();
+app.MapFallbackToFile("index.html");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -32,6 +34,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.MapControllers();
 app.Run();

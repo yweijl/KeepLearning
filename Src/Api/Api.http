@@ -31,7 +31,7 @@ Content-Type: application/json
 
 ###
 
-GET {{host}}/Resources/0598fd97-f780-4d59-8e03-a3fb89d621a1
+GET {{host}}/Resources/0eeced3f-89c4-4d9a-851a-a6c17c8e0f7b
 Accept: application/json
 
 ###
