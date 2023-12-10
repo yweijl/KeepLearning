@@ -1,8 +1,9 @@
-﻿@page "/"
+﻿@using KL.Client.Pages.Components
 
+@page "/"
 <AuthorizeView>
     <Authorized>
-        <p>authie</p>
+        <ResourceList/>
     </Authorized>
     <NotAuthorized >
         <Login/>

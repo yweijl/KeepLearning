@@ -15,7 +15,7 @@ public class UserController : ControllerBase
     public IActionResult Get()
     {
         var claims = new Dictionary<string, string>();
-        ClaimsPrincipal.Current?.Claims.ToList().ForEach(x => claims.Add(x.Type, x.Value));
+        HttpContext.User.Claims.ToList().ForEach(x => claims.Add(x.Type, x.Value));
         return Ok(claims);
     }
     

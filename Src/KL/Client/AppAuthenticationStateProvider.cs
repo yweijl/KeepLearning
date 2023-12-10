@@ -16,19 +16,27 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var claims = await _httpClient.GetFromJsonAsync<Dictionary<string, string>>("api/User");
-        if (claims!.Any())
-        {
-            _authenticationState = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(
-                claims?.Select(x => new Claim(x.Key, x.Value))
-            )));
-        }
-
-        return _authenticationState;
+        var user = await GetUserClaimsAsync();
+        return new AuthenticationState(user);
     }
 
     public async Task LoginAsync(bool isCommunityUser)
     {
-        var result = await _httpClient.GetAsync($"api/User/login/{isCommunityUser}");
+        await _httpClient.GetAsync($"api/User/login/{isCommunityUser}");
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+    }
+
+    private async Task<ClaimsPrincipal> GetUserClaimsAsync()
+    {
+        var claims = await _httpClient.GetFromJsonAsync<Dictionary<string, string>>("api/User");
+        
+        if (!claims!.Any())
+        {
+            return new ClaimsPrincipal();
+        }
+        
+        return new ClaimsPrincipal(new ClaimsIdentity(
+                claims?.Select(x => new Claim(x.Key, x.Value)), "cookie"
+            ));
     }
 }
