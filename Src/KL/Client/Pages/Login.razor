@@ -1,0 +1,30 @@
+@inject AppAuthenticationStateProvider AuthenticationStateProvider;
+<div class="mt-15 d-flex justify-center gap-4">
+
+    <MudCard Style="width: 200px">
+        <MudCardContent Class="d-flex justify-center">
+            <MudText>Internal user</MudText>
+        </MudCardContent>
+        <MudCardActions Class="d-flex justify-center">
+            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => OnLogin(false))">Login</MudButton>
+        </MudCardActions>
+    </MudCard>
+
+    <MudCard Style="width: 200px">
+        <MudCardContent Class="d-flex justify-center">
+            <MudText>Community user</MudText>
+        </MudCardContent>
+        <MudCardActions Class="d-flex justify-center">
+            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => OnLogin(true))" >Login</MudButton>
+        </MudCardActions>
+    </MudCard>
+</div>
+
+@code {
+
+    private async Task OnLogin(bool isCommunityUser)
+    {
+       await AuthenticationStateProvider.LoginAsync(isCommunityUser);
+    }
+
+}

@@ -1,4 +1,4 @@
-namespace Core.Resources;
+namespace KL.Shared.Resources;
 
 public interface IResourceService
 {

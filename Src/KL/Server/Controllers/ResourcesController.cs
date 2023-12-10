@@ -1,9 +1,9 @@
 using System.Net;
-using Core.Resources;
+using KL.Shared.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers;
+namespace KL.Server.Controllers;
 
 [Authorize]
 [ApiController]
