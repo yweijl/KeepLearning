@@ -38,4 +38,10 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
                 claims?.Select(x => new Claim(x.Key, x.Value)), "cookie"
             ));
     }
+
+    public async Task LogoutAsync()
+    {
+        await _httpClient.GetAsync("api/User/logout");
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+    }
 }

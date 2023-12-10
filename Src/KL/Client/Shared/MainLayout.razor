@@ -1,5 +1,5 @@
-﻿@using MudBlazor
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
+@inject AppAuthenticationStateProvider AuthenticationStateProvider;
 
 <PageTitle>Blijven leren</PageTitle>
 
@@ -12,7 +12,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudText Typo="Typo.h5" Class="ml-3">Blijven leren</MudText>
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+        <MudButton Variant="Variant.Text" Style="color: white" OnClick="@OnLogout">Logout</MudButton>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu/>
@@ -24,7 +24,13 @@
     </MudMainContent>
 </MudLayout>
 @code {
+    
     bool _drawerOpen = false;
+
+    private async Task OnLogout()
+    {
+        await AuthenticationStateProvider.LogoutAsync();
+    }
 
     void DrawerToggle()
     {
