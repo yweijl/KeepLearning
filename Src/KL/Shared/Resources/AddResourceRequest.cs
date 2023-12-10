@@ -1,9 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace KL.Shared.Resources;
 
 public class AddResourceRequest
 {
-    public required string Name { get; set; }
-    public required string Description { get; set; }
-    public required string Source { get; set; }
-    public List<string> Comments { get; set; } = new ();
+    [Required(ErrorMessage = "Geef een naam op")]
+    public string Name { get; set; } = default!;
+
+    [Required(ErrorMessage = "Geef een Beschrijving")]
+    public string Description { get; set; } = default!;
+
+    [Required(ErrorMessage = "Voer een bron in")]
+    public string Source { get; set; } = default!;
+
+    public List<string> Comments { get; set; } = new();
 }

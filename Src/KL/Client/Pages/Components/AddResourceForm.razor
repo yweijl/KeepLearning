@@ -1,0 +1,54 @@
+@using System.ComponentModel.DataAnnotations
+@using KL.Shared.Resources
+
+<MudDialog Style="min-width: 100px; width: 400px">
+    <DialogContent >
+        <EditForm sm="12" Model="@Model" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator/>
+            <MudCard Class="mb-5">
+                <MudCardContent>
+                    <MudTextField Label="Naam" Class="mt-3"
+                                  @bind-Value="Model.Name" For="@(() => Model.Name)"/>
+                    <MudTextField Label="Beschrijving"
+                                  @bind-Value="Model.Description" For="@(() => Model.Description)"/>
+                    <MudTextField Label="Bron" Class="mt-3"
+                                  @bind-Value="Model.Source" For="@(() => Model.Source)"/>
+                </MudCardContent>
+                <MudCardActions Class="d-flex justify-end">
+                    <MudButton OnClick="Cancel">Annuleer</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-1">Opslaan</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+    </DialogContent>
+</MudDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; } = default!;
+
+
+    public AddResourceRequest Model { get; set; } = new ();
+
+
+    private void OnValidSubmit(EditContext context)
+    {
+        var resource = new Resource()
+        {
+            Id = Guid.NewGuid(),
+            Name = Model.Name,
+            Description = Model.Description,
+            Source = Model.Source
+        };
+        
+        MudDialog.Close(DialogResult.Ok(resource));
+    }
+
+
+    void Cancel() => MudDialog.Cancel();
+
+}
+
+}

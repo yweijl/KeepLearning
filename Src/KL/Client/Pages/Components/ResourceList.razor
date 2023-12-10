@@ -1,10 +1,17 @@
 @using KL.Shared.Resources
-<div>
-<MudText Typo="Typo.h4" Class="mb-5">Resources</MudText>
-    
+@inject ISnackbar Snackbar;
+@inject IDialogService DialogService;
+
+<div class="d-flex justify-space-between pl-12 pr-12 mt-5 align-center">
+    <MudText Typo="Typo.h4" Class="mb-5">Resources</MudText>
+    <AuthorizeView Policy="RequireInternalUserRole">
+        <span>
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" OnClick="@OnAdd">Nieuw</MudButton>
+        </span>
+    </AuthorizeView>
 </div>
 
-<div class="d-flex flex-wrap gap-4 mb-5">
+<div class="d-flex flex-wrap gap-4 mb-5 justify-center">
     @foreach (var resource in _resources)
     {
         <MudCard Style="width: 400px;">
@@ -13,7 +20,9 @@
                     <MudText Typo="Typo.h6">@resource.Name</MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
-                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Default" />
+                    <AuthorizeView Policy="RequireInternalUserRole">
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Default" OnClick="@(() => OnDelete(resource))"/>
+                    </AuthorizeView>
                 </CardHeaderActions>
             </MudCardHeader>
             <MudCardContent>
@@ -21,15 +30,35 @@
                 <MudText Class="mt-3" Typo="Typo.body2">@resource.Source</MudText>
             </MudCardContent>
             <MudCardActions>
-                <MudButton Variant="Variant.Text" Color="Color.Primary">See comments</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Primary">Bekijk opmerkingen</MudButton>
             </MudCardActions>
         </MudCard>
     }
 </div>
 
 @code {
-    
-    private List<Resource> _resources = new List<Resource>()
+
+    private async Task OnAdd()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialog = await DialogService.ShowAsync<AddResourceForm>("Nieuwe resource", options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            _resources.Insert(0, (Resource)result.Data);
+            StateHasChanged();
+            Snackbar.Add("Resource toegevoegd", Severity.Info);
+        }
+
+    }
+
+    private void OnDelete(Resource resource)
+    {
+        _resources.Remove(resource);
+    }
+
+    private readonly List<Resource> _resources = new List<Resource>()
     {
         new()
         {
@@ -149,4 +178,5 @@
             }
         }
     };
+
 }

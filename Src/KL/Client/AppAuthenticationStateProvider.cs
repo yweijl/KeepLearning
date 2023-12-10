@@ -7,7 +7,6 @@ namespace KL.Client;
 public class AppAuthenticationStateProvider : AuthenticationStateProvider
 {
     private readonly HttpClient _httpClient;
-    private AuthenticationState _authenticationState = new(new ClaimsPrincipal());
 
     public AppAuthenticationStateProvider(HttpClient httpClient)
     {
