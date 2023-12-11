@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace KL.Shared.Resources;
 
-public class AddResourceRequest
+public class AddResource
 {
     [Required(ErrorMessage = "Geef een naam op")]
     public string Name { get; set; } = default!;

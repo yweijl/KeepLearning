@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using KL.Server.Resources;
+using KL.Server.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,19 @@ builder.Services.AddAuthentication().AddCookie(options =>
 {
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Events.OnRedirectToLogin = context =>
+    {
+        if (context.Request.Path.StartsWithSegments("/api"))
+        {
+            context.RedirectUri = new PathString("/api");
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+        }
+        else
+        {
+            context.RedirectUri = new PathString("/");
+        }
+        return Task.CompletedTask;
+    };
 });
 
 builder.Services.AddAuthorization(options =>
@@ -21,6 +35,12 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddRazorPages();
+
+builder.Services.Configure<CosmosSettings>(
+    builder.Configuration.GetSection(nameof(CosmosSettings)));
+
+builder.Services.AddSingleton<ResourceRepository>();
+builder.Services.AddScoped<IResourceService, ResourceService>();
 
 var app = builder.Build();
 
@@ -40,14 +60,28 @@ else
 
 app.UseHttpsRedirection();
 
+
+
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.MapRazorPages();
-app.MapControllers();
-app.MapFallbackToFile("index.html");
+
+app.UseEndpoints(endpoint =>
+{
+    endpoint.MapRazorPages();
+    endpoint.MapControllers();
+    endpoint.Map("api/{**slug}", context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status404NotFound;
+        return Task.CompletedTask;
+    } );
+   
+    endpoint.MapFallbackToFile("{**slug}", "index.html");
+});
 
 app.Run();

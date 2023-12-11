@@ -1,20 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-    </PropertyGroup>
+      <UserSecretsId>1a060ea1-7f72-4135-93be-0bd1de22b28d</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.14"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.14" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.14" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.37.0" />
+        <PackageReference Include="Azure.Identity" Version="1.10.4" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Client\KL.Client.csproj"/>
-        <ProjectReference Include="..\Shared\KL.Shared.csproj"/>
+        <ProjectReference Include="..\Client\KL.Client.csproj" />
+        <ProjectReference Include="..\Shared\KL.Shared.csproj" />
     </ItemGroup>
 
 

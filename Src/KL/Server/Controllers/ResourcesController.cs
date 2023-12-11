@@ -1,4 +1,5 @@
 using System.Net;
+using KL.Server.Resources;
 using KL.Shared.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,11 @@ public class ResourcesController : ControllerBase
 
     public ResourcesController(IResourceService resourceService)
     {
-        this._resourceService = resourceService;
+        _resourceService = resourceService;
     }
 
     [HttpGet]
     [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(List<Resource>))]
-    [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> List()
     {
         var resources = await _resourceService.ListAsync();
@@ -39,7 +39,7 @@ public class ResourcesController : ControllerBase
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> Post([FromBody] AddResourceRequest request)
+    public async Task<IActionResult> Post([FromBody] AddResource request)
     {
         var resource = await _resourceService.AddAsync(request);
         return CreatedAtAction(nameof(Get), new { resource.Id }, resource);
