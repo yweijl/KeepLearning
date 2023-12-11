@@ -31,7 +31,7 @@ Content-Type: application/json
 
 ###
 
-GET {{host}}/Resources/d2ef34bc-be23-4ef1-8fe8-27023e5c4be4
+GET {{host}}/Resources/89fb999c-28c3-41a8-817a-b94ec7f1e7c6
 Accept: application/json
 
 ###
@@ -39,7 +39,7 @@ GET {{host}}/Resources/
 Accept: application/json
 
 ###
-DELETE {{host}}/Resources/d2ef34bc-be23-4ef1-8fe8-27023e5c4be4
+DELETE {{host}}/Resources/89fb999c-28c3-41a8-817a-b94ec7f1e7c6
 Accept: application/json
 
 ###

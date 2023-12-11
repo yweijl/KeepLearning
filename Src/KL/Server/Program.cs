@@ -1,3 +1,4 @@
+using KL.Server;
 using KL.Server.Resources;
 using KL.Server.Settings;
 
@@ -9,6 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddOutputCache(options =>
+{
+    // options.AddPolicy(nameof(CachePolicy), CachePolicy.Instance);
+    options.AddPolicy(nameof(CachePolicy), x =>
+    {
+        x.AddPolicy<CachePolicy>();
+        x.Tag(nameof(CachePolicy));
+    });
+});
+
 builder.Services.AddAuthentication().AddCookie(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -70,6 +81,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseOutputCache();
 
 app.UseEndpoints(endpoint =>
 {

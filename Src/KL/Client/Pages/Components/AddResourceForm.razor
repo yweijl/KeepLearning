@@ -1,5 +1,6 @@
-@using System.ComponentModel.DataAnnotations
 @using KL.Shared.Resources
+@inject HttpClient HttpClient;
+@inject ISnackbar Snackbar;
 
 <MudDialog Style="min-width: 100px; width: 400px">
     <DialogContent >
@@ -29,21 +30,23 @@
     [CascadingParameter]
     private MudDialogInstance MudDialog { get; set; } = default!;
 
-
     public AddResource Model { get; set; } = new ();
 
 
-    private void OnValidSubmit(EditContext context)
+    private async Task OnValidSubmit(EditContext context)
     {
-        var resource = new Resource()
+        var response = await HttpClient.PostAsJsonAsync("api/Resources",Model);
+        if (response.IsSuccessStatusCode)
         {
-            Id = Guid.NewGuid(),
-            Name = Model.Name,
-            Description = Model.Description,
-            Source = Model.Source
-        };
-        
-        MudDialog.Close(DialogResult.Ok(resource));
+            var resource = await response.Content.ReadFromJsonAsync<Resource>();
+            MudDialog.Close(DialogResult.Ok(resource));
+        }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            Snackbar.Add($"Er is iets misgegaan: {message}", Severity.Error);
+            MudDialog.Cancel();
+        }
     }
 
 

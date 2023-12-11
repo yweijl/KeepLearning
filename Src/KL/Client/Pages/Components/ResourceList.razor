@@ -1,42 +1,65 @@
 @using KL.Shared.Resources
 @inject ISnackbar Snackbar;
 @inject IDialogService DialogService;
+@inject HttpClient HttpClient;
 
-<div class="d-flex justify-space-between pl-12 pr-12 mt-5 align-center">
-    <MudText Typo="Typo.h4" Class="mb-5">Resources</MudText>
+<div class="d-flex justify-space-between pr-15 mt-5 align-center mb-5">
+    <MudText Typo="Typo.h4">Resources</MudText>
     <AuthorizeView Policy="RequireInternalUserRole">
-        <span>
+        <span class="mr-9">
             <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" OnClick="@OnAdd">Nieuw</MudButton>
         </span>
     </AuthorizeView>
 </div>
 
-<div class="d-flex flex-wrap gap-4 mb-5 justify-center">
-    @foreach (var resource in _resources)
+<div class="d-flex mb-5 justify-center">
+    @if (_loading)
     {
-        <MudCard Style="width: 400px;">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h6">@resource.Name</MudText>
-                </CardHeaderContent>
-                <CardHeaderActions>
-                    <AuthorizeView Policy="RequireInternalUserRole">
-                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Default" OnClick="@(() => OnDelete(resource))"/>
-                    </AuthorizeView>
-                </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText>@resource.Description</MudText>
-                <MudText Class="mt-3" Typo="Typo.body2">@resource.Source</MudText>
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton Variant="Variant.Text" Color="Color.Primary">Bekijk opmerkingen</MudButton>
-            </MudCardActions>
-        </MudCard>
+        <div style="height: 50vh" class="d-flex">
+            <MudProgressCircular class="d-flex align-self-center" Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true"/>
+        </div>
     }
+    else
+    {
+        <div class="d-flex flex-wrap gap-4">
+            @foreach (var resource in _resources)
+            {
+                <MudCard Style="width: 400px;">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">@resource.Name</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <AuthorizeView Policy="RequireInternalUserRole">
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Default" OnClick="@(() => OnDelete(resource))"/>
+                            </AuthorizeView>
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText Class="mb-1">@resource.Description</MudText>
+                        <MudLink Href="@resource.Source" Typo="Typo.body2">@resource.Source</MudLink>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary">Bekijk opmerkingen</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            }
+        </div>
+    }
+    
 </div>
 
 @code {
+    private bool _loading;
+
+    private List<Resource> _resources = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        _resources = await HttpClient.GetFromJsonAsync<List<Resource>>("api/Resources") ?? new List<Resource>();
+        _loading = false;
+    }
 
     private async Task OnAdd()
     {
@@ -47,136 +70,15 @@
         if (!result.Canceled)
         {
             _resources.Insert(0, (Resource)result.Data);
-            StateHasChanged();
             Snackbar.Add("Resource toegevoegd", Severity.Info);
+            StateHasChanged();
         }
-
     }
 
-    private void OnDelete(Resource resource)
+    private async Task OnDelete(Resource resource)
     {
+        await HttpClient.DeleteAsync($"api/Resources/{resource.Id}");
         _resources.Remove(resource);
     }
-
-    private readonly List<Resource> _resources = new List<Resource>()
-    {
-        new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Name",
-            Description = "Description",
-            Source = "https://www.youtube.com/watch?v=TEXZSzPpZqo",
-            Comments = new List<string>()
-            {
-                "yesss",
-                "nooooo",
-                "well this is awkard or not"
-            }
-        },
-        new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Name",
-            Description = "Description",
-            Source = "https://www.youtube.com/watch?v=TEXZSzPpZqo",
-            Comments = new List<string>()
-            {
-                "yesss",
-                "nooooo",
-                "well this is awkard or not"
-            }
-        },
-        new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Name",
-            Description = "Description",
-            Source = "https://www.youtube.com/watch?v=TEXZSzPpZqonjsdanfjhkdshjkhj",
-            Comments = new List<string>()
-            {
-                "yesss",
-                "nooooo",
-                "well this is awkard or not"
-            }
-        },
-        new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Name",
-            Description = "Description",
-            Source = "https://www.youtube.com/watch?v=TEXZSzPpZqo",
-            Comments = new List<string>()
-            {
-                "yesss",
-                "nooooo",
-                "well this is awkard or not"
-            }
-        },
-        new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Name",
-            Description = "Description",
-            Source = "https://www.youtube.com/watch?v=TEXZSzPpZqo",
-            Comments = new List<string>()
-            {
-                "yesss",
-                "nooooo",
-                "well this is awkard or not"
-            }
-        },
-        new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Name",
-            Description = "Description",
-            Source = "https://www.youtube.com/watch?v=TEXZSzPpZqo",
-            Comments = new List<string>()
-            {
-                "yesss",
-                "nooooo",
-                "well this is awkard or not"
-            }
-        },
-        new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Name",
-            Description = "Description",
-            Source = "https://www.youtube.com/watch?v=TEXZSzPpZqo",
-            Comments = new List<string>()
-            {
-                "yesss",
-                "nooooo",
-                "well this is awkard or not"
-            }
-        },
-        new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Name",
-            Description = "Description",
-            Source = "https://www.youtube.com/watch?v=TEXZSzPpZqo",
-            Comments = new List<string>()
-            {
-                "yesss",
-                "nooooo",
-                "well this is awkard or not"
-            }
-        },
-        new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Name",
-            Description = "Description",
-            Source = "https://www.youtube.com/watch?v=TEXZSzPpZqo",
-            Comments = new List<string>()
-            {
-                "yesss",
-                "nooooo",
-                "well this is awkard or not"
-            }
-        }
-    };
 
 }
