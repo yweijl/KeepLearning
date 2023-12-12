@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KL.Client", "KL\Client\KL.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KL.Shared", "KL\Shared\KL.Shared.csproj", "{B5190418-D7F2-4E6A-949A-9F3FF674A4F2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C92264A1-BB4C-4F55-9133-1E2055ED5293}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KL.E2E.Tests", "Tests\KL.E2E.Tests\KL.E2E.Tests.csproj", "{D692DD5C-BCE5-4DFF-AEFA-2C8FC0DDF194}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,12 @@ Global
 		{B5190418-D7F2-4E6A-949A-9F3FF674A4F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5190418-D7F2-4E6A-949A-9F3FF674A4F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5190418-D7F2-4E6A-949A-9F3FF674A4F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D692DD5C-BCE5-4DFF-AEFA-2C8FC0DDF194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D692DD5C-BCE5-4DFF-AEFA-2C8FC0DDF194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D692DD5C-BCE5-4DFF-AEFA-2C8FC0DDF194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D692DD5C-BCE5-4DFF-AEFA-2C8FC0DDF194}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D692DD5C-BCE5-4DFF-AEFA-2C8FC0DDF194} = {C92264A1-BB4C-4F55-9133-1E2055ED5293}
 	EndGlobalSection
 EndGlobal
